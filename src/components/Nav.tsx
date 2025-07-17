@@ -1,26 +1,84 @@
-import {Theater, Calendar, Users, Phone   } from 'lucide-react'
-import { useState } from 'react';
+import {Theater, Calendar, Users, Phone, Menu, Divide } from 'lucide-react'
+import { useState, useEffect } from 'react';
 export default function Nav() {
-    
+    const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
     const [active, setActive] = useState("Home");
+    const [menuOpen, setMenuOpen] = useState(false);
+
+    useEffect(() => {
+        const handleResize = () => {
+        setIsDesktop(window.innerWidth >= 768);
+        };
+        window.addEventListener('resize', handleResize);
+        handleResize();
+        return () => {
+        window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
     return (
         <>
-            <div className='bg-black'>
+            <div className='bg-black relative'>
                 <nav className=" flex justify-between items-center h-16 bg-black text-white px-6 max-w-[1200px] mx-auto">
                 <div id="left" className='flex items-center gap-2 '>
                     <Theater color='#E7B008' size={30}/>
-                    <h1 className="text-xl font-bree font-bold text-[#4A0813] ">Movie Booking</h1>
+                    <h1 className="text-xl font-bree font-bold text-[#4A0813] ">Royal Theater</h1>
                 </div>
+                {isDesktop ? 
+                
                 <div id="right">
-                    <ul className="flex gap-4 font-inter font-semibold items-center">
+                    <div className="flex gap-4 font-inter font-semibold items-center">
                         <button onClick={()=>{setActive("Home")}} className={` ${active=="Home" ? "text-[#E7B008] bg-[#251D18]":"hover:text-[#E7B008] hover:bg-[#171210] text-white"} flex gap-2 transition-colors duration-300 cursor-pointer p-2 rounded-md`}><Theater />Home</button>
                         <button onClick={()=>{setActive("Shows")}} className={` ${active=="Shows" ? "text-[#E7B008] bg-[#251D18]":"hover:text-[#E7B008] hover:bg-[#171210] text-white"} flex gap-2 transition-colors duration-300 cursor-pointer p-2 rounded-md`}><Calendar />Shows</button>
                         <button onClick={()=>{setActive("About")}} className={` ${active=="About" ? "text-[#E7B008] bg-[#251D18]":"hover:text-[#E7B008] hover:bg-[#171210] text-white"} flex gap-2 transition-colors duration-300 cursor-pointer p-2 rounded-md`}><Users />About</button>
                         <button onClick={()=>{setActive("Contact")}} className={` ${active=="Contact" ? "text-[#E7B008] bg-[#251D18]":"hover:text-[#E7B008] hover:bg-[#171210] text-white"} flex gap-2 transition-colors duration-300 cursor-pointer p-2 rounded-md`}><Phone />Contact Us</button>
                         <button onClick={() => { setActive("Log In") }} className={`bg-gradient-to-r from-[#4A0813] to-[#cd0022] text-white transition-all duration-300 transform hover:scale-105 hover:rotate-1 p-2 px-4 rounded-md font-semibold ${active == "Log In" ? "" : ""}`}>Log In </button>
                         <button onClick={() => { setActive("Sign In") }} className={`transition-colors duration-300 p-2 px-4 rounded-md font-semibold ${active == "Sign In" ? "bg-[#cd0022] text-white" : "text-white border border-[#cd0022] bg-transparent hover:bg-[#cd0022] hover:text-white"}`}> Sign In</button>
-                    </ul>
+                    </div>
                 </div>
+                :
+                <div id="right">
+                    <button className={`transition-transform duration-300 ease-out origin-center ${ menuOpen ? "rotate-90 scale-105" : ""}`}>
+                        <Menu color='#E7B008' size={30} onClick={() => setMenuOpen(!menuOpen)} />
+                    </button>
+                    <div className={`absolute top-full left-0 w-full bg-[#0F0D0A] z-50 transition-all duration-300 ease-in-out transform ${
+                            menuOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-6 pointer-events-none"
+                        }`}>
+                            <div className="flex gap-2 flex-col font-inter font-semibold py-2">
+                                <button onClick={() => { setActive("Home"); setMenuOpen(false); }} className={`rounded-2xl text-left px-4 mx-2 py-4 flex gap-2 items-center transition-colors duration-300 ${
+                                    active === "Home" ? "text-[#E7B008] bg-[#251D18]" : "hover:text-[#E7B008] hover:bg-[#171210] text-white"
+                                }`}>
+                                    <Theater /> Home
+                                </button>
+                                <button onClick={() => { setActive("Shows"); setMenuOpen(false); }} className={`rounded-2xl text-left px-4 mx-2 py-4 flex gap-2 items-center transition-colors duration-300 ${
+                                    active === "Shows" ? "text-[#E7B008] bg-[#251D18]" : "hover:text-[#E7B008] hover:bg-[#171210] text-white"
+                                }`}>
+                                    <Calendar /> Shows
+                                </button>
+                                <button onClick={() => { setActive("About"); setMenuOpen(false); }} className={`rounded-2xl text-left px-4 mx-2 py-4 flex gap-2 items-center transition-colors duration-300 ${
+                                    active === "About" ? "text-[#E7B008] bg-[#251D18]" : "hover:text-[#E7B008] hover:bg-[#171210] text-white"
+                                }`}>
+                                    <Users /> About
+                                </button>
+                                <button onClick={() => { setActive("Contact"); setMenuOpen(false); }} className={`rounded-2xl text-left px-4 mx-2 py-4 flex gap-2 items-center transition-colors duration-300 ${
+                                    active === "Contact" ? "text-[#E7B008] bg-[#251D18]" : "hover:text-[#E7B008] hover:bg-[#171210] text-white"
+                                }`}>
+                                    <Phone /> Contact Us
+                                </button>
+                                <button onClick={() => { setActive("Log In"); setMenuOpen(false); }} className=" rounded-2xl mx-2 px-6 py-4 bg-gradient-to-r from-[#4A0813] to-[#cd0022] text-white font-semibold">
+                                    Log In
+                                </button>
+                                <button onClick={() => { setActive("Sign In"); setMenuOpen(false); }} className={` px-6 py-4 border-2 border-[#cd0022] rounded-2xl mx-2 ${
+                                    active === "Sign In" ? "bg-[#cd0022] text-white" : "text-white  bg-transparent hover:bg-[#cd0022] hover:text-white"
+                                }`}>
+                                    Sign In
+                                </button>
+                            </div>
+                        </div>
+
+                </div>
+                }
+                
             </nav>
             </div>
         </>
