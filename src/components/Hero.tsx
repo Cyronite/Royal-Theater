@@ -2,7 +2,7 @@ import hero from "../assets/hero_background.jpg";
 
 export default function Hero() {
   return (
-    <div className="w-screen h-screen relative z-0">
+    <div className="w-full h-screen relative z-0">
       <img
         src={hero}
         alt="hero"
