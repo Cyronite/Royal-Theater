@@ -1,5 +1,26 @@
+import { useEffect } from "react";
 export default function Featured(){
-    
+    useEffect(()=>{
+        async function getFeatured(){
+        console.log("tried to send req")
+        try{
+            const response = await fetch('http://localhost:5000/movies/featured');
+            if (!response.ok){
+                throw new Error(`Response ${response.status}`)
+            }
+            const json = await response.json();
+            console.log(json)
+        } catch (error) {
+            let message
+            if (error instanceof Error) message = error.message
+            else message = String(error)
+        
+            reportError({ message })
+        }
+    }
+    getFeatured();
+    },[])
+   
     return(
         <>
            <div className="bg-black">
