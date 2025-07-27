@@ -36,6 +36,12 @@ export default function Featured(){
     }
     getFeatured();
     },[])
+    function formatTime(timeStr: string) {
+        const [hours, minutes] = timeStr.split(":").map(Number);
+        const ampm = hours >= 12 ? "PM" : "AM";
+        const adjustedHour = hours % 12 || 12;
+        return `${adjustedHour}:${minutes.toString().padStart(2, "0")} ${ampm}`;
+    }
    
     return(
         <>
@@ -63,8 +69,8 @@ export default function Featured(){
                                 <div className=" text-gray-500 font-inter text-lg">{play.description}</div>
                                 <div className="flex flex-col gap-3">
                                     
-                                    <div className="flex gap-2 text-gray-500 items-center text-sm"><Calendar size={20}/>{play.show_date}</div>
-                                    <div className="flex gap-2 text-gray-500 items-center text-sm"><Clock size={20}/>{play.show_time}</div>
+                                    <div className="flex gap-2 text-gray-500 items-center text-sm"><Calendar size={20}/> {new Date(play.show_date).toLocaleDateString("en-US", {weekday: "short", year: "numeric", month: "short", day: "numeric"})}</div>
+                                    <div className="flex gap-2 text-gray-500 items-center text-sm"><Clock size={20}/>{formatTime(play.show_time)}</div>
                                     <div className="flex gap-2 text-gray-500 items-center text-sm"><MapPin size={20}/>Main Stage</div>
                                 </div>
                             </div>
@@ -94,7 +100,7 @@ export default function Featured(){
                                      <button className=" border-1 border-[#312621] hover:bg-[#E7B008] text-sm text-white hover:text-black transition-all duration-300 p-1.5 px-4 rounded-md font-semibold">Join Waitlist</button>
                                      }
                                     
-                                </div>
+                                </div>  
                             </div>
                         </div>
                     ))}

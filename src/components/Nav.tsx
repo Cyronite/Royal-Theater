@@ -1,4 +1,5 @@
-import {Theater, Calendar, Users, Phone, Menu, Divide } from 'lucide-react'
+import { NavLink } from "react-router-dom";
+import {Theater, Calendar, Users, Phone, Menu } from 'lucide-react'
 import { useState, useEffect } from 'react';
 export default function Nav() {
     const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
@@ -28,12 +29,33 @@ export default function Nav() {
                 
                 <div id="right">
                     <div className="flex gap-4 font-inter font-semibold items-center">
-                        <button onClick={()=>{setActive("Home")}} className={` ${active=="Home" ? "text-[#E7B008] bg-[#251D18]":"hover:text-[#E7B008] hover:bg-[#171210] text-white"} flex gap-2 transition-colors duration-300 cursor-pointer p-2 rounded-md`}><Theater />Home</button>
-                        <button onClick={()=>{setActive("Shows")}} className={` ${active=="Shows" ? "text-[#E7B008] bg-[#251D18]":"hover:text-[#E7B008] hover:bg-[#171210] text-white"} flex gap-2 transition-colors duration-300 cursor-pointer p-2 rounded-md`}><Calendar />Shows</button>
-                        <button onClick={()=>{setActive("About")}} className={` ${active=="About" ? "text-[#E7B008] bg-[#251D18]":"hover:text-[#E7B008] hover:bg-[#171210] text-white"} flex gap-2 transition-colors duration-300 cursor-pointer p-2 rounded-md`}><Users />About</button>
-                        <button onClick={()=>{setActive("Contact")}} className={` ${active=="Contact" ? "text-[#E7B008] bg-[#251D18]":"hover:text-[#E7B008] hover:bg-[#171210] text-white"} flex gap-2 transition-colors duration-300 cursor-pointer p-2 rounded-md`}><Phone />Contact Us</button>
-                        <button onClick={() => { setActive("Log In") }} className={`bg-gradient-to-r from-[#4A0813] to-[#cd0022] text-white transition-all duration-300 transform hover:scale-105 hover:rotate-1 p-2 px-4 rounded-md font-semibold ${active == "Log In" ? "" : ""}`}>Log In </button>
-                        <button onClick={() => { setActive("Sign In") }} className={`transition-colors duration-300 p-2 px-4 rounded-md font-semibold border border-[#cd0022] ${active == "Sign In" ? "bg-[#cd0022] text-white" : "text-white  bg-transparent hover:bg-[#cd0022] hover:text-white"}`}> Sign In</button>
+                        <NavLink onClick={()=>{setActive("Home")}} to="/" end className={` ${active=="Home" ? "text-[#E7B008] bg-[#251D18]":"hover:text-[#E7B008] hover:bg-[#171210] text-white"} flex gap-2 transition-colors duration-300 cursor-pointer p-2 rounded-md`}>
+                            <Theater /> Home
+                        </NavLink>
+
+                        <NavLink onClick={()=>{setActive("Shows")}} to="/shows" className={` ${active=="Shows" ? "text-[#E7B008] bg-[#251D18]":"hover:text-[#E7B008] hover:bg-[#171210] text-white"} flex gap-2 transition-colors duration-300 cursor-pointer p-2 rounded-md`}>
+                            <Calendar /> Shows
+                        </NavLink>
+
+                        <NavLink  onClick={()=>{setActive("About")}} to="/about" className={` ${active=="About" ? "text-[#E7B008] bg-[#251D18]":"hover:text-[#E7B008] hover:bg-[#171210] text-white"} flex gap-2 transition-colors duration-300 cursor-pointer p-2 rounded-md`}>
+                            <Users /> About
+                        </NavLink>
+
+                        <NavLink onClick={()=>{setActive("Contact")}} to="/contact" className={` ${active=="Contact" ? "text-[#E7B008] bg-[#251D18]":"hover:text-[#E7B008] hover:bg-[#171210] text-white"} flex gap-2 transition-colors duration-300 cursor-pointer p-2 rounded-md`}>
+                            <Phone /> Contact Us
+                        </NavLink>
+
+                        <NavLink onClick={() => { setActive("Log In") }} to="/login" className="bg-gradient-to-r from-[#4A0813] to-[#cd0022] text-white transition-all duration-300 transform hover:scale-105 hover:rotate-1 p-2 px-4 rounded-md font-semibold">
+                            Log In
+                        </NavLink>
+
+                        <NavLink onClick={() => { setActive("Sign In") }} to="/signin" className={({ isActive }) =>
+                            `transition-colors duration-300 p-2 px-4 rounded-md font-semibold border border-[#cd0022] ${
+                            isActive ? "bg-[#cd0022] text-white" : "text-white  bg-transparent hover:bg-[#cd0022] hover:text-white"
+                            }`
+                        }>
+                            Sign In
+                        </NavLink>
                     </div>
                 </div>
                 :
