@@ -3,7 +3,28 @@ import {Theater, Calendar, Users, Phone, Menu } from 'lucide-react'
 import { useState, useEffect } from 'react';
 export default function Nav() {
     const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
-    const [active, setActive] = useState("Home");
+      // Initialize active state from localStorage or default to "Home"
+  const [active, setActive] = useState(() => {
+    return localStorage.getItem("navActive") || "Home";
+  });
+
+  
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 768);
+    };
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  // Update localStorage whenever 'active' changes
+  useEffect(() => {
+    localStorage.setItem("navActive", active);
+  }, [active]);
+
     const [menuOpen, setMenuOpen] = useState(false);
 
     useEffect(() => {
