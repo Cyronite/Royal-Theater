@@ -77,34 +77,66 @@ export default function Nav() {
                             menuOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-6 pointer-events-none"
                         }`}>
                             <div className="flex gap-2 flex-col font-inter font-semibold py-2">
-                                <button onClick={() => { setActive("Home"); setMenuOpen(false); }} className={`rounded-2xl text-left px-4 mx-2 py-4 flex gap-2 items-center transition-colors duration-300 ${
-                                    active === "Home" ? "text-[#E7B008] bg-[#251D18]" : "hover:text-[#E7B008] hover:bg-[#171210] text-white"
-                                }`}>
+                                <NavLink 
+                                    to="/"
+                                    end
+                                    onClick={() => { setActive("Home"); setMenuOpen(false); }} 
+                                    className={({isActive}) => `rounded-2xl text-left px-4 mx-2 py-4 flex gap-2 items-center transition-colors duration-300 ${
+                                        isActive ? "text-[#E7B008] bg-[#251D18]" : "hover:text-[#E7B008] hover:bg-[#171210] text-white"
+                                    }`}
+                                >
                                     <Theater /> Home
-                                </button>
-                                <button onClick={() => { setActive("Shows"); setMenuOpen(false); }} className={`rounded-2xl text-left px-4 mx-2 py-4 flex gap-2 items-center transition-colors duration-300 ${
-                                    active === "Shows" ? "text-[#E7B008] bg-[#251D18]" : "hover:text-[#E7B008] hover:bg-[#171210] text-white"
-                                }`}>
+                                </NavLink>
+                                
+                                <NavLink 
+                                    to="/shows"
+                                    onClick={() => { setActive("Shows"); setMenuOpen(false); }}
+                                    className={({isActive}) => `rounded-2xl text-left px-4 mx-2 py-4 flex gap-2 items-center transition-colors duration-300 ${
+                                        isActive ? "text-[#E7B008] bg-[#251D18]" : "hover:text-[#E7B008] hover:bg-[#171210] text-white"
+                                    }`}
+                                >
                                     <Calendar /> Shows
-                                </button>
-                                <button onClick={() => { setActive("About"); setMenuOpen(false); }} className={`rounded-2xl text-left px-4 mx-2 py-4 flex gap-2 items-center transition-colors duration-300 ${
-                                    active === "About" ? "text-[#E7B008] bg-[#251D18]" : "hover:text-[#E7B008] hover:bg-[#171210] text-white"
-                                }`}>
+                                </NavLink>
+                                
+                                <NavLink 
+                                    to="/about"
+                                    onClick={() => { setActive("About"); setMenuOpen(false); }}
+                                    className={({isActive}) => `rounded-2xl text-left px-4 mx-2 py-4 flex gap-2 items-center transition-colors duration-300 ${
+                                        isActive ? "text-[#E7B008] bg-[#251D18]" : "hover:text-[#E7B008] hover:bg-[#171210] text-white"
+                                    }`}
+                                >
                                     <Users /> About
-                                </button>
-                                <button onClick={() => { setActive("Contact"); setMenuOpen(false); }} className={`rounded-2xl text-left px-4 mx-2 py-4 flex gap-2 items-center transition-colors duration-300 ${
-                                    active === "Contact" ? "text-[#E7B008] bg-[#251D18]" : "hover:text-[#E7B008] hover:bg-[#171210] text-white"
-                                }`}>
+                                </NavLink>
+                                
+                                <NavLink 
+                                    to="/contact"
+                                    onClick={() => { setActive("Contact"); setMenuOpen(false); }}
+                                    className={({isActive}) => `rounded-2xl text-left px-4 mx-2 py-4 flex gap-2 items-center transition-colors duration-300 ${
+                                        isActive ? "text-[#E7B008] bg-[#251D18]" : "hover:text-[#E7B008] hover:bg-[#171210] text-white"
+                                    }`}
+                                >
                                     <Phone /> Contact Us
-                                </button>
-                                <button onClick={() => { setActive("Log In"); setMenuOpen(false); }} className=" rounded-2xl mx-2 px-6 py-4 bg-gradient-to-r from-[#4A0813] to-[#cd0022] text-white font-semibold">
+                                </NavLink>
+                                
+                                <NavLink 
+                                    to="/login"
+                                    onClick={() => { setActive("Log In"); setMenuOpen(false); }}
+                                    className={({isActive}) => `rounded-2xl mx-2 px-6 py-4 ${
+                                        isActive ? "bg-gradient-to-r from-[#4A0813] to-[#cd0022]" : "bg-gradient-to-r from-[#4A0813] to-[#cd0022]"
+                                    } text-white font-semibold`}
+                                >
                                     Log In
-                                </button>
-                                <button onClick={() => { setActive("Sign In"); setMenuOpen(false); }} className={` px-6 py-4 border-2 border-[#cd0022] rounded-2xl mx-2 ${
-                                    active === "Sign In" ? "bg-[#cd0022] text-white" : "text-white  bg-transparent hover:bg-[#cd0022] hover:text-white"
-                                }`}>
+                                </NavLink>
+                                
+                                <NavLink 
+                                    to="/signin"
+                                    onClick={() => { setActive("Sign In"); setMenuOpen(false); }}
+                                    className={({isActive}) => `px-6 py-4 border-2 border-[#cd0022] rounded-2xl mx-2 ${
+                                        isActive ? "bg-[#cd0022] text-white" : "text-white bg-transparent hover:bg-[#cd0022] hover:text-white"
+                                    }`}
+                                >
                                     Sign In
-                                </button>
+                                </NavLink>
                             </div>
                         </div>
 
