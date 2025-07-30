@@ -2,23 +2,12 @@ import { NavLink } from "react-router-dom";
 import {Theater, Calendar, Users, Phone, Menu } from 'lucide-react'
 import { useState, useEffect } from 'react';
 export default function Nav() {
-    const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
+    const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 900);
       // Initialize active state from localStorage or default to "Home"
   const [active, setActive] = useState(() => {
     return localStorage.getItem("navActive") || "Home";
   });
 
-  
-  useEffect(() => {
-    const handleResize = () => {
-      setIsDesktop(window.innerWidth >= 768);
-    };
-    window.addEventListener("resize", handleResize);
-    handleResize();
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
 
   // Update localStorage whenever 'active' changes
   useEffect(() => {
@@ -29,7 +18,7 @@ export default function Nav() {
 
     useEffect(() => {
         const handleResize = () => {
-        setIsDesktop(window.innerWidth >= 768);
+        setIsDesktop(window.innerWidth >= 900);
         };
         window.addEventListener('resize', handleResize);
         handleResize();

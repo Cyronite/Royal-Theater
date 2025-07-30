@@ -8,6 +8,8 @@ import Footer from './components/Footer'
 import Shows from './components/Shows'
 import About from './components/about'
 import Contact from './components/contactus';
+import SignIn from './components/SignUp';
+import LogIn from './components/LogIn';
 function App() {
 
   return (
@@ -22,6 +24,7 @@ function App() {
               <Stats />
               <Featured />
               <Legacy />
+              <Footer />
             </>
           }
         />
@@ -30,6 +33,7 @@ function App() {
           element={
             <>
               <Shows/>
+              <Footer />
             </>
           }
         />
@@ -38,6 +42,7 @@ function App() {
           element={
             <>
               <About/>
+              <Footer />
             </>
           }
         />
@@ -46,11 +51,28 @@ function App() {
           element={
             <>
               <Contact/>
+              <Footer />
             </>
           }
         />
+        <Route
+          path="/login"
+          element={
+            <>
+              <LogIn />
+            </>
+          }
+          />
+          <Route
+          path="/signin"
+          element={
+            <>
+              <SignIn />
+            </>
+          }
+          />
       </Routes>
-      <Footer />
+      
     </>
   );
 }
