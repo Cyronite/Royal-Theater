@@ -71,7 +71,7 @@ async function doesTableExist(tableName) {
     `, [tableName]);
 
     const exists = result.rows[0].exists;
-    console.log(`DOES IT EXIST: ${exists}`);
+    console.log(`Table ${tableName} exists: ${exists}`);
     return exists;
   } catch (err) {
     console.error('Error checking table existence:', err);
@@ -81,8 +81,30 @@ async function doesTableExist(tableName) {
 
 async function setup() {
   try {
+    // Drop tables in correct order (because of foreign key constraints)
     await pool.query(`
-      CREATE TABLE IF NOT EXISTS movies (
+      DROP TABLE IF EXISTS bookings CASCADE;
+      DROP TABLE IF EXISTS movies CASCADE;
+      DROP TABLE IF EXISTS users CASCADE;
+    `);
+    console.log('✅ Existing tables dropped');
+
+    // Create tables in correct order
+    await pool.query('CREATE EXTENSION IF NOT EXISTS "pgcrypto";');
+    
+    // Create users table
+    await pool.query(`
+      CREATE TABLE users (
+        uid TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+    console.log('✅ Users table created');
+
+    // Create movies table
+    await pool.query(`
+      CREATE TABLE movies (
         id SERIAL PRIMARY KEY,
         title TEXT NOT NULL,
         description TEXT,
@@ -90,43 +112,62 @@ async function setup() {
         show_time TIME NOT NULL,
         price NUMERIC(6, 2) NOT NULL,
         image BYTEA,
-        featured BOOLEAN,
-        available BOOLEAN,
+        featured BOOLEAN DEFAULT false,
+        available BOOLEAN DEFAULT true,
         rating NUMERIC(2, 1) CHECK (rating >= 0 AND rating <= 5)
       );
     `);
-    console.log('✅ movies table created');
-  } catch (err) {
-    console.error('❌ Error creating table:', err);
-  }
+    console.log('✅ Movies table created');
 
-  if (await doesTableExist('movies')) {
-    try {
-      for (const play of plays) {
-        const imageBuffer = fs.readFileSync(play.imagePath);
-        const res = await pool.query(
-          `INSERT INTO movies (
-            title, description, show_date, show_time, price, image, featured, available, rating
-          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id`,
-          [
-            play.title,
-            play.description,
-            play.show_date,
-            play.show_time,
-            play.price,
-            imageBuffer,
-            play.featured,
-            play.available,
-            play.rating
-          ]
-        );
-        console.log(`Inserted play with ID: ${res.rows[0].id}`);
+    // Create bookings table
+    await pool.query(`
+      CREATE TABLE bookings (
+        id SERIAL PRIMARY KEY,
+        user_id TEXT REFERENCES users(uid),
+        movie_id INTEGER REFERENCES movies(id),
+        num_tickets INTEGER NOT NULL CHECK (num_tickets > 0),
+        booked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+    console.log('✅ Bookings table created');
+
+    // Insert test data
+    if (await doesTableExist('movies')) {
+      try {
+        for (const play of plays) {
+          const imageBuffer = fs.readFileSync(play.imagePath);
+          const res = await pool.query(
+            `INSERT INTO movies (
+              title, description, show_date, show_time, price, 
+              image, featured, available, rating
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) 
+            RETURNING id`,
+            [
+              play.title,
+              play.description,
+              play.show_date,
+              play.show_time,
+              play.price,
+              imageBuffer,
+              play.featured,
+              play.available,
+              play.rating
+            ]
+          );
+          console.log(`✅ Inserted play: ${play.title} with ID: ${res.rows[0].id}`);
+        }
+      } catch (err) {
+        console.error('❌ Error inserting plays:', err);
+        throw err; // Rethrow to trigger the catch block
       }
-    } catch (err) {
-      console.error('Error inserting plays:', err);
-    } finally {
-      await pool.end();
     }
+
+    console.log('✅ Database setup completed successfully');
+  } catch (err) {
+    console.error('❌ Error during setup:', err);
+  } finally {
+    await pool.end();
+    console.log('Database connection closed');
   }
 }
 
