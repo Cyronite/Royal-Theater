@@ -1,6 +1,15 @@
 import hero from "../assets/hero_background.jpg";
+import { useNavigate } from "react-router-dom";
+type HeroProps = {
+  setActive: (active: string) => void;
+};
 
-export default function Hero() {
+export default function Hero({ setActive }: HeroProps) {
+  const navigate = useNavigate();
+  function handleclick(){
+    setActive("Shows");
+    navigate("/shows");
+  }
   return (
     <div className="w-full h-screen relative z-0">
       <img
@@ -14,7 +23,7 @@ export default function Hero() {
           <h1 className="font-bree text-6xl max-md:text-5xl text-center text-[#E7B008]">Come to Life</h1>
         </div>
         <p className="font-inter text-center text-xl max-md:text-lg max-w-[600px] text-white">Experience the magic of live theater in our historic venue. From timeless classics to groundbreaking new works.</p>
-        <button className=" text-xl max-md:text-sm bg-gradient-to-r from-[#4A0813] to-[#cd0022] text-white transition-all duration-300 transform hover:scale-105 hover:rotate-1 hover:shadow-[0_0_20px_#000000] p-3 px-6 rounded-md font-semibold">View Current Shows</button>
+        <button onClick={()=>handleclick()}className=" text-xl max-md:text-sm bg-gradient-to-r from-[#4A0813] to-[#cd0022] text-white transition-all duration-300 transform hover:scale-105 hover:rotate-1 hover:shadow-[0_0_20px_#000000] p-3 px-6 rounded-md font-semibold">View Current Shows</button>
       </div>
     </div>
   );

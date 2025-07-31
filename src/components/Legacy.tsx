@@ -1,5 +1,15 @@
 import curtins from "../assets/curtins.jpg"
-export default function Legacy(){
+import { useNavigate } from "react-router-dom";
+type LegacyProps = {
+  setActive: (active: string) => void;
+};
+
+export default function Hero({ setActive }: LegacyProps) {
+  const navigate = useNavigate();
+  function handleclick(){
+    setActive("About");
+    navigate("/about");
+  }
     return(
     <div className="w-full h-[55vh]  overflow-hidden relative">
         
@@ -14,7 +24,7 @@ export default function Legacy(){
           <h1 className="font-bree text-6xl max-md:text-5xl text-center text-white ">A Legacy of Excellence</h1>
         </div>
         <p className="font-inter text-center text-xl max-md:text-lg max-w-[800px] text-white">For over 100 years, Royal Theater has been the cultural heart of our city, presenting world-class productions and nurturing new talent. Our historic venue combines timeless elegance with state-of-the-art technology.</p>
-        <button className=" text-xl max-md:text-sm bg-amber-400 text-black transition-all duration-300 transform hover:scale-105  hover:shadow-[0_0_20px_#000000] p-3 px-6 rounded-md font-semibold">Learn Our Story</button>
+        <button onClick={()=>handleclick()} className=" text-xl max-md:text-sm bg-amber-400 text-black transition-all duration-300 transform hover:scale-105  hover:shadow-[0_0_20px_#000000] p-3 px-6 rounded-md font-semibold">Learn Our Story</button>
       </div>
     </div>     
     );

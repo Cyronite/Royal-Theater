@@ -1,35 +1,93 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 import {
   signInWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
+  signOut,
 } from "firebase/auth";
 import { Mail, Lock, Theater } from "lucide-react";
 
-const LogIn: React.FC = () => {
+
+
+function getFriendlyErrorMessage(error: any) {
+  if (!error?.code) return error?.message || "An unknown error occurred.";
+  switch (error.code) {
+    case "auth/user-not-found":
+      return "No account found with this email.";
+    case "auth/wrong-password":
+      return "Incorrect password. Please try again.";
+    case "auth/invalid-email":
+      return "Please enter a valid email address.";
+    case "auth/popup-closed-by-user":
+      return "Sign-in cancelled. Please try again.";
+    case "auth/popup-blocked":
+      return "Popup was blocked. Please enable popups for this site.";
+    case "auth/user-disabled":
+      return "This account has been disabled.";
+    default:
+      return error.message || "An error occurred. Please try again.";
+  }
+}
+type NavProps = {
+  setUid: (uid: string | null) => void;
+};
+export default function LogIn({setUid }: NavProps) {
+
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
 
+  const checkUserInDB = async (uid: string) => {
+    const res = await fetch("http://localhost:5000/users/signin", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ uid }),
+    });
+    return res.ok;
+  };
+
   const handleEmailLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      console.log("Signed in with email");
-      setError(null);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const uid = userCredential.user.uid;
+      const exists = await checkUserInDB(uid);
+      if (exists) {
+        navigate("/dashboard");
+        setUid(uid);
+        localStorage.setItem("uid", uid);
+        setError(null);
+      } else {
+        await signOut(auth);
+        setError("No account found in our system for this user. Please sign up first.");
+      }
     } catch (err: any) {
-      setError(err.message);
+      setError(getFriendlyErrorMessage(err));
     }
   };
 
   const handleGoogleLogin = async () => {
     try {
-      await signInWithPopup(auth, new GoogleAuthProvider());
-      console.log("Signed in with Google");
-      setError(null);
+      const result = await signInWithPopup(auth, new GoogleAuthProvider());
+      if (result.user) {
+        const exists = await checkUserInDB(result.user.uid);
+        if (exists) {
+          navigate("/dashboard");
+          setUid(result.user.uid)
+          localStorage.setItem("uid", result.user.uid);
+          console.log("Google user logged in:", result.user.uid);
+          setError(null);
+        } else {
+          await signOut(auth);
+          setError("No account found for this Google user. Please sign up first.");
+        }
+      }
     } catch (err: any) {
-      setError(err.message);
+      setError(getFriendlyErrorMessage(err));
     }
   };
 
@@ -107,5 +165,3 @@ const LogIn: React.FC = () => {
     </div>
   );
 };
-
-export default LogIn;

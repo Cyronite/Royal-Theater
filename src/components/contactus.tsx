@@ -14,7 +14,7 @@ export default function ContactSection() {
     body: formData,
   })
     .then(res => res.json())
-    .then(data => {
+    .then(() => {
       alert("Message sent!");
       form.reset();
     })

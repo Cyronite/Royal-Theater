@@ -12,10 +12,9 @@ const firebaseConfig = {
   projectId: "moviebooking-25",
   storageBucket: "moviebooking-25.firebasestorage.app",
   messagingSenderId: "1064588361879",
-  appId: "1:1064588361879:web:8b76c8e60298acab23a9d2",
-  measurementId: "G-CV0ZRMWXDQ"
+  appId: "1:1064588361879:web:9206f37e6841cc9023a9d2",
+  measurementId: "G-EFD669EBLM"
 };
-
 
 const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);

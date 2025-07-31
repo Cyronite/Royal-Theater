@@ -1,4 +1,6 @@
 import { Routes, Route } from "react-router-dom";
+import {useState} from 'react';
+import React from "react";
 import Nav from './components/Nav';
 import Hero from './components/Hero'
 import Stats from './components/stats'
@@ -8,22 +10,28 @@ import Footer from './components/Footer'
 import Shows from './components/Shows'
 import About from './components/about'
 import Contact from './components/contactus';
-import SignIn from './components/SignUp';
+import Sighnup from './components/SignUp';
 import LogIn from './components/LogIn';
+import Dashboard from "./components/Dashboard";
 function App() {
-
+  const [uid, setUid] = useState<string | null>(() => {
+    return localStorage.getItem("uid");
+  });
+  const [active, setActive] = useState(() => {
+      return localStorage.getItem("navActive") || "Home";
+  });
   return (
     <>
-      <Nav />
+      <Nav uid={uid} setUid={setUid} active={active} setActive={setActive}/>
       <Routes>
         <Route
           path="/"
           element={
             <>
-              <Hero />
+              <Hero setActive={setActive}/>
               <Stats />
-              <Featured />
-              <Legacy />
+              <Featured  setActive={setActive}/>
+              <Legacy setActive={setActive}/>
               <Footer />
             </>
           }
@@ -59,15 +67,24 @@ function App() {
           path="/login"
           element={
             <>
-              <LogIn />
+              <LogIn setUid={setUid}/>
             </>
           }
           />
           <Route
-          path="/signin"
+          path="/signup"
           element={
             <>
-              <SignIn />
+              <Sighnup setUid={setUid}/>
+            </>
+          }
+          />
+          <Route
+          path="/dashboard"
+          element={
+            <>
+              <Dashboard uid={uid}/>
+              <Footer />
             </>
           }
           />

@@ -1,4 +1,4 @@
-import { Calendar, Users, Award, Heart, Star, Landmark } from "lucide-react";
+import { Users , Heart, Star, Landmark } from "lucide-react";
 import background from "../assets/curtins.jpg";
 import Stats from "../components/stats";
 
@@ -31,7 +31,7 @@ export default function About() {
     <div className="bg-[#0C0A09] text-white font-inter">
       {/* Hero */}
       <div
-        className="bg-cover bg-center flex flex-col justify-center items-center text-center h-[30vh]"
+        className="bg-cover bg-center flex flex-col justify-center items-center text-center h-[400px]"
         style={{ backgroundImage: `url(${background})` }}
       >
         <h1 className="text-5xl font-bold font-bree text-white drop-shadow-lg">Our Story</h1>

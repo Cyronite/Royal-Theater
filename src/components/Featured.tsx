@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import{Calendar,Clock, MapPin, Star} from 'lucide-react'
+import { useNavigate } from "react-router-dom";
 type Play = {
   id: number;
   title: string;
@@ -11,8 +12,16 @@ type Play = {
   rating: number;
   available: boolean;
 };
+type FeaturedProps = {
+  setActive: (active: string) => void;
+};
 
-export default function Featured(){
+export default function Featured({ setActive }: FeaturedProps) {
+  const navigate = useNavigate();
+  function handleclick(){
+    setActive("Shows");
+    navigate("/shows");
+  }
     const [plays, setPlays] = useState<Play[]>([]);
 
     useEffect(()=>{
@@ -96,7 +105,7 @@ export default function Featured(){
                     </div>
                     
                     <div className="flex justify-center items-center mt-14">
-                        <button className=" border-1 border-[#312621] hover:bg-[#E7B008] text-lg text-white hover:text-black transition-all duration-300 p-3 px-5 rounded-md font-semibold">View All Shows</button>
+                        <button onClick={()=>handleclick()}className=" border-1 border-[#312621] hover:bg-[#E7B008] text-lg text-white hover:text-black transition-all duration-300 p-3 px-5 rounded-md font-semibold">View All Shows</button>
                     </div>
                 
                 </div>

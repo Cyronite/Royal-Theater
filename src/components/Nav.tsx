@@ -1,12 +1,19 @@
 import { NavLink } from "react-router-dom";
 import {Theater, Calendar, Users, Phone, Menu } from 'lucide-react'
 import { useState, useEffect } from 'react';
-export default function Nav() {
+
+type NavProps = {
+  uid: string | null;
+  setUid: (uid: string | null) => void;
+  active: string;
+  setActive: (active: string) => void;
+ 
+};
+
+export default function Nav({uid, setUid, active, setActive}: NavProps) {
     const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 900);
       // Initialize active state from localStorage or default to "Home"
-  const [active, setActive] = useState(() => {
-    return localStorage.getItem("navActive") || "Home";
-  });
+   
 
 
   // Update localStorage whenever 'active' changes
@@ -51,21 +58,47 @@ export default function Nav() {
                             <Users /> About
                         </NavLink>
 
-                        <NavLink onClick={()=>{setActive("Contact")}} to="/contact" className={` ${active=="Contact" ? "text-[#E7B008] bg-[#251D18]":"hover:text-[#E7B008] hover:bg-[#171210] text-white"} flex gap-2 transition-colors duration-300 cursor-pointer p-2 rounded-md`}>
+                        <NavLink  onClick={()=>{setActive("Contact")}} to="/contact" className={` ${active=="Contact" ? "text-[#E7B008] bg-[#251D18]":"hover:text-[#E7B008] hover:bg-[#171210] text-white"} flex gap-2 transition-colors duration-300 cursor-pointer p-2 rounded-md`}>
                             <Phone /> Contact Us
                         </NavLink>
 
-                        <NavLink onClick={() => { setActive("Log In") }} to="/login" className="bg-gradient-to-r from-[#4A0813] to-[#cd0022] text-white transition-all duration-300 transform hover:scale-105 hover:rotate-1 p-2 px-4 rounded-md font-semibold">
+                        {uid == null ? (
+                        <>
+                            <NavLink
+                            onClick={() => { setActive("Log In") }}
+                            to="/login"
+                            className="bg-gradient-to-r from-[#4A0813] to-[#cd0022] text-white transition-all duration-300 transform hover:scale-105 hover:rotate-1 p-2 px-4 rounded-md font-semibold"
+                            >
                             Log In
-                        </NavLink>
+                            </NavLink>
 
-                        <NavLink onClick={() => { setActive("Sign In") }} to="/signin" className={({ isActive }) =>
-                            `transition-colors duration-300 p-2 px-4 rounded-md font-semibold border border-[#cd0022] ${
-                            isActive ? "bg-[#cd0022] text-white" : "text-white  bg-transparent hover:bg-[#cd0022] hover:text-white"
-                            }`
-                        }>
-                            Sign In
+                            <NavLink
+                            onClick={() => { setActive("Sign Up") }}
+                            to="/signup"
+                            className={({ isActive }) =>
+                                `transition-colors duration-300 p-2 px-4 rounded-md font-semibold border border-[#cd0022] ${
+                                isActive
+                                    ? "bg-[#cd0022] text-white"
+                                    : "text-white bg-transparent hover:bg-[#cd0022] hover:text-white"
+                                }`
+                            }
+                            >
+                            Sign Up
+                            </NavLink>
+                        </>
+                        ) : (
+                        <NavLink
+                            onClick={() => {
+                            setActive("Home");
+                            setUid(null);
+                            localStorage.removeItem("uid"); 
+                            }}
+                            to="/"
+                            className="bg-gradient-to-r from-[#4A0813] to-[#cd0022] text-white transition-all duration-300 transform hover:scale-105 hover:rotate-1 p-2 px-4 rounded-md font-semibold"
+                        >
+                            Sign Out
                         </NavLink>
+                        )}
                     </div>
                 </div>
                 :
@@ -129,13 +162,13 @@ export default function Nav() {
                                 </NavLink>
                                 
                                 <NavLink 
-                                    to="/signin"
-                                    onClick={() => { setActive("Sign In"); setMenuOpen(false); }}
+                                    to="/sighnup"
+                                    onClick={() => { setActive("Sign Up"); setMenuOpen(false); }}
                                     className={({isActive}) => `px-6 py-4 border-2 border-[#cd0022] rounded-2xl mx-2 ${
                                         isActive ? "bg-[#cd0022] text-white" : "text-white bg-transparent hover:bg-[#cd0022] hover:text-white"
                                     }`}
                                 >
-                                    Sign In
+                                    Sign Up
                                 </NavLink>
                             </div>
                         </div>
