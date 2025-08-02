@@ -1,69 +1,108 @@
-# React + TypeScript + Vite
+# 🎭 Movie Booking App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A sleek full-stack web application to browse and book tickets for upcoming plays — complete with secure authentication and Stripe-powered payments.
 
-Currently, two official plugins are available:
+## 🚀 Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Coming soon...
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Frontend
+- **React** + **TypeScript**
+- **TailwindCSS** for modern, responsive styling
+- **@heroui/react** for polished UI components
+- **Vite** for lightning-fast development
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Backend
+- **Node.js** + **Express.js** for RESTful APIs
+- **PostgreSQL** (via **Docker**) for persistent bookings data
+- **Firebase Authentication** (Email + Google login)
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### Payments
+- **Stripe Payment Element** integration for secure, seamless checkout
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 🔑 Features
+
+- 🔍 Browse upcoming plays with rich metadata (title, rating, date, location)
+- 🧾 Dynamic ticket pricing and availability
+- 🔐 Secure user authentication with Firebase
+- 💳 Stripe-powered ticket checkout with custom session handling
+- 🧠 Role-based navbar that adapts to login state
+- 💡 Clean and responsive UI with modals, dropdowns, and search
+
+
+## 🧪 Setup Instructions
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/yourusername/movie-booking-app.git
+cd movie-booking-app
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Add Environment Variables
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+In both the **root `.env`** and **`/server/.env`** files, add the stripe secret and public keys :
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+
+### 3. Configure Stripe
+
+- Go to the [Stripe Dashboard](https://dashboard.stripe.com/)
+- Create a new **Product** and **Price**
+- Replace the placeholder `price_id` in the project code with your real Stripe price ID
+
+### 4. Set Up the Database
+
+Make sure Docker is running, then start the database:
+
+```bash
+docker-compose up -d
 ```
+
+Then run the DB setup script:
+
+```bash
+cd server
+node setup-db.js
+```
+
+This initializes the database with the required tables.
+
+### 5. Install Dependencies
+
+```bash
+# Backend
+cd server
+npm install
+
+# Frontend
+cd ../frontend
+npm install
+```
+
+### 6. Run the App
+
+Start the backend server:
+
+```bash
+cd server
+npm run dev
+```
+
+In a separate terminal, start the frontend:
+
+```bash
+cd frontend
+npm run dev
+```
+
+The app will be available at `http://localhost:5173`.
+
+## 🙌 Contributing
+
+Pull requests are welcome! For major changes, please open an issue first to discuss what you'd like to change.
+
+## 📄 License
+
+[MIT](LICENSE)
