@@ -4,7 +4,7 @@ A sleek full-stack web application to browse and book tickets for upcoming plays
 
 ## 🚀 Live Demo
 
-Coming soon...
+[![Youtube Demo](https://img.youtube.com/vi/lI6X45smZBg/0.jpg)](https://www.youtube.com/watch?v=lI6X45smZBg)
 
 ## 🛠️ Tech Stack
 
