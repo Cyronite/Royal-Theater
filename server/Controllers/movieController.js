@@ -1,4 +1,5 @@
 import pool from '../db.js';
+
 export const getFeatured = async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM movies WHERE featured');
@@ -47,7 +48,7 @@ export const getBookings = async (req, res) => {
         m.show_time,
         m.price,
         m.featured,
-        m.available,
+        m.numtickets,
         m.rating,
         m.image
       FROM bookings b
@@ -71,7 +72,7 @@ export const getBookings = async (req, res) => {
     show_time: row.show_time,
     price: parseFloat(row.price),
     featured: row.featured,
-    available: row.available,
+    numtickets: row.numtickets,
     rating: parseFloat(row.rating),
     image: row.image ? Buffer.from(row.image).toString('base64') : null,
   },

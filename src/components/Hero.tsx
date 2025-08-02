@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import hero from "../assets/hero_background.jpg";
 import { useNavigate } from "react-router-dom";
 type HeroProps = {
@@ -5,6 +6,9 @@ type HeroProps = {
 };
 
 export default function Hero({ setActive }: HeroProps) {
+  useEffect(() => {
+    setActive("Home");
+  }, [setActive]);
   const navigate = useNavigate();
   function handleclick(){
     setActive("Shows");

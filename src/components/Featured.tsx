@@ -10,7 +10,8 @@ type Play = {
   show_time: string;
   price: number;
   rating: number;
-  available: boolean;
+  numtickets: number;
+  
 };
 type FeaturedProps = {
   setActive: (active: string) => void;
@@ -85,18 +86,18 @@ export default function Featured({ setActive }: FeaturedProps) {
                 </div>
                 <div className="flex justify-between items-center px-6 py-4 border-t border-[#312621]">
                   <div className="flex items-center gap-2 text-sm font-inter text-white">
-                    <div className={`w-3 h-3 rounded-full ${play.available ? 'bg-green-600' : 'bg-red-600'}`} />
-                    {play.available ? 'Tickets Available' : 'Sold Out'}
+                    <div className={`w-3 h-3 rounded-full ${(play.numtickets > 0) ? 'bg-green-600' : 'bg-red-600'}`} />
+                    {(play.numtickets > 0) ? 'Tickets Available' : 'Sold Out'}
                   </div>
                   <button
-                    disabled={!play.available}
+                    disabled={!(play.numtickets > 0)}
                     className={`text-sm px-4 py-1.5 rounded-md font-semibold transition-all ${
-                      play.available
+                      (play.numtickets > 0)
                         ? 'bg-gradient-to-r from-[#4A0813] to-[#cd0022] text-white hover:scale-105'
                         : 'border border-[#312621] text-white hover:bg-[#E7B008] hover:text-black'
                     }`}
                   >
-                    {play.available ? 'Book Now' : 'Join Waitlist'}
+                    {(play.numtickets > 0) ? 'Book Now' : 'Out of Tickets'}
                   </button>
                 </div>
               </div>

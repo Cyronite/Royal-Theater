@@ -2,6 +2,9 @@ import { Search, Calendar, Clock, MapPin, Star } from 'lucide-react';
 import { useState, useEffect, useMemo } from 'react';
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, type Selection } from "@heroui/react";
 
+import { loadStripe } from '@stripe/stripe-js';
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK);
+
 type Play = {
   id: number;
   title: string;
@@ -10,14 +13,52 @@ type Play = {
   rating: number;
   show_date: string;
   show_time: string;
-  available: boolean;
+  numtickets: number;
+  price:number;
 };
 
-export default function Shows() {
+export default function Shows({ uid }: { uid: string | null }) {
   const [query, setQuery] = useState("");
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set(["Sort By ..."]));
   const selectedValue = useMemo(() => Array.from(selectedKeys).join(", ").replace(/_/g, ""), [selectedKeys]);
   const [plays, setPlays] = useState<Play[]>([]);
+ 
+
+
+  async function handleCheckout(playId: number, numtickets: number, price: number) {
+    if (!uid) {
+      alert("Please log in to book tickets");
+      return;
+    }else{
+      const stripe = await stripePromise;
+      if (!stripe) {
+        console.error('Stripe failed to load.');
+        return;
+      }
+      // Call your backend to create the checkout session
+      const response = await fetch('http://localhost:5000/checkout/create-checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ playId:playId, numtickets:numtickets, price:price,  uid:uid }),
+      });
+
+      const data = await response.json();
+      if (data.sessionId) {
+        // Redirect to Stripe Checkout page
+        const { error } = await stripe.redirectToCheckout({
+          sessionId: data.sessionId,
+        });
+
+        if (error) {
+          console.error('Stripe redirect error:', error.message);
+        }
+      } else {
+        console.error('Failed to get sessionId from backend');
+      }
+    }
+  }
 
   useEffect(() => {
     async function getShows() {
@@ -125,18 +166,20 @@ export default function Shows() {
                 </div>
                 <div className="flex justify-between items-center px-6 py-4 border-t border-[#312621]">
                   <div className="flex items-center gap-2 text-sm font-inter text-white">
-                    <div className={`w-3 h-3 rounded-full ${play.available ? 'bg-green-600' : 'bg-red-600'}`} />
-                    {play.available ? 'Tickets Available' : 'Sold Out'}
+                    <div className={`w-3 h-3 rounded-full ${(play.numtickets > 0) ? 'bg-green-600' : 'bg-red-600'}`} />
+                    {(play.numtickets > 0) ? 'Tickets Available' : 'Sold Out'}
                   </div>
                   <button
-                    disabled={!play.available}
+                    onClick={() => handleCheckout(play.id, play.numtickets, play.price)} // Assuming priceId is play.id for simplicity
+                    disabled={!(play.numtickets > 0)}
+                    
                     className={`text-sm px-4 py-1.5 rounded-md font-semibold transition-all ${
-                      play.available
+                      (play.numtickets > 0)
                         ? 'bg-gradient-to-r from-[#4A0813] to-[#cd0022] text-white hover:scale-105'
                         : 'border border-[#312621] text-white hover:bg-[#E7B008] hover:text-black'
                     }`}
                   >
-                    {play.available ? 'Book Now' : 'Join Waitlist'}
+                    {(play.numtickets > 0) ? 'Book Now' : 'Out of Tickets'}
                   </button>
                 </div>
               </div>

@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Calendar, Clock, MapPin, Star, Ticket } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 type Play = {
   id: number;
@@ -10,7 +11,7 @@ type Play = {
   show_time: string;
   price: number;
   rating: number;
-  available: boolean;
+  numtickets: number;
 };
 
 type BookingWithMovie = {
@@ -24,6 +25,7 @@ type NavProps = {
   uid: string | null;
 };
 export default function Dashboard({uid}: NavProps) {
+  const navigate = useNavigate();
   const [plays, setPlays] = useState<BookingWithMovie[]>([]);
   const [selectedTicket, setSelectedTicket] = useState<BookingWithMovie | null>(null);
 
@@ -34,6 +36,7 @@ export default function Dashboard({uid}: NavProps) {
     return `${adjustedHour}:${minutes.toString().padStart(2, "0")} ${ampm}`;
   }
 
+  
   useEffect(() => {
     async function getBookedShows() {
       try {
@@ -44,6 +47,12 @@ export default function Dashboard({uid}: NavProps) {
       } catch (error) {
         console.error(error);
       }
+    }
+
+    if (!uid) {
+      console.error("User not logged in");
+      navigate("/login");
+      return;
     }
     getBookedShows();
   }, []);
@@ -56,11 +65,10 @@ export default function Dashboard({uid}: NavProps) {
         <p className="text-gray-400 text-center mb-8 font-inter">
           Here are your upcoming movie bookings. Enjoy the show!
         </p>
-
         {plays.length === 0 ? (
           <div className="text-gray-400 text-center font-inter mt-20">
             You have no tickets yet. Book your first movie!
-          </div>
+          </div>        
         ) : (
           <div className="flex justify-center items-center">
             <div className="flex flex-wrap justify-center gap-6 max-w-[1400px] w-full">
@@ -107,8 +115,7 @@ export default function Dashboard({uid}: NavProps) {
                         </div>
                         <div className="flex items-center gap-2">
                           <Ticket size={16} />
-                          
-                          {numTickets} ticket{numTickets > 1 ? "s" : ""}
+                            {numTickets} ticket{numTickets > 1 ? "s" : ""}
                         </div>
                       </div>
                     </div>

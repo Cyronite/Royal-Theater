@@ -7,7 +7,7 @@ import { GoogleAuthProvider } from "firebase/auth";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyAudkW4EA5qX7FmGT_QE1e21He35xNUayg",
+  apiKey: "apikey",
   authDomain: "moviebooking-25.firebaseapp.com",
   projectId: "moviebooking-25",
   storageBucket: "moviebooking-25.firebasestorage.app",

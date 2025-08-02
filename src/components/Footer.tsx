@@ -54,7 +54,7 @@ export default function Footer() {
           <h3 className="text-lg font-semibold mb-3 font-bree">Contact Info</h3>
           <ul className="space-y-2 text-sm text-gray-400">
             <li><div  className="text-md font-inter">123 Main Street</div></li>
-            <li><div  className="text-md font-inter">Toronto, Ontario, M1M 2G1</div></li>
+            <li><div  className="text-md font-inter">Toronto, Ontario, A1A 1A1</div></li>
             <li><div  className="text-md font-inter"> Box Office:</div><div className="text-md text-[#FFB900] font-inter">(555) 123-SHOW</div></li>
             
           </ul>

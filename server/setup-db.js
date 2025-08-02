@@ -10,7 +10,7 @@ const plays = [
     price: 25.00,
     imagePath: './images/romeo.jpg',
     featured: true,
-    available: false,
+    numtickets: 0,
     rating: 5.0
   },
   {
@@ -21,7 +21,7 @@ const plays = [
     price: 30.00,
     imagePath: './images/macbeth.jpg',
     featured: false,
-    available: true,
+    numtickets: 5,
     rating: 4.3
   },
   {
@@ -32,7 +32,7 @@ const plays = [
     price: 20.00,
     imagePath: './images/midsummer.jpg',
     featured: true,
-    available: true,
+    numtickets: 4,
     rating: 4.6
   },
   {
@@ -43,7 +43,7 @@ const plays = [
     price: 28.00,
     imagePath: './images/hamlet.jpg',
     featured: true,
-    available: true,
+    numtickets: 3,
     rating: 4.8
   },
   {
@@ -54,7 +54,7 @@ const plays = [
     price: 27.50,
     imagePath: './images/othello.jpg',
     featured: false,
-    available: false,
+    numtickets: 0,
     rating: 3.9
   }
 ];
@@ -113,7 +113,7 @@ async function setup() {
         price NUMERIC(6, 2) NOT NULL,
         image BYTEA,
         featured BOOLEAN DEFAULT false,
-        available BOOLEAN DEFAULT true,
+        numtickets INTEGER DEFAULT 0 CHECK (numtickets >= 0),
         rating NUMERIC(2, 1) CHECK (rating >= 0 AND rating <= 5)
       );
     `);
@@ -139,7 +139,7 @@ async function setup() {
           const res = await pool.query(
             `INSERT INTO movies (
               title, description, show_date, show_time, price, 
-              image, featured, available, rating
+              image, featured, numtickets, rating
             ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) 
             RETURNING id`,
             [
@@ -150,7 +150,7 @@ async function setup() {
               play.price,
               imageBuffer,
               play.featured,
-              play.available,
+              play.numtickets,
               play.rating
             ]
           );

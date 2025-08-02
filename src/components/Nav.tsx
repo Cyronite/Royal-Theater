@@ -87,6 +87,21 @@ export default function Nav({uid, setUid, active, setActive}: NavProps) {
                             </NavLink>
                         </>
                         ) : (
+                        <>
+                         <NavLink
+                            onClick={() => { setActive("Dashboard") }}
+                            to="/dashboard"
+                            className={({ isActive }) =>
+                                `transition-colors duration-300 p-2 px-4 rounded-md font-semibold border border-[#cd0022] ${
+                                isActive
+                                    ? "bg-[#cd0022] text-white"
+                                    : "text-white bg-transparent hover:bg-[#cd0022] hover:text-white"
+                                }`
+                            }
+                            >
+                            Dashboard
+                            </NavLink>
+                        
                         <NavLink
                             onClick={() => {
                             setActive("Home");
@@ -98,6 +113,10 @@ export default function Nav({uid, setUid, active, setActive}: NavProps) {
                         >
                             Sign Out
                         </NavLink>
+                        </>
+                       
+                        
+                            
                         )}
                     </div>
                 </div>
